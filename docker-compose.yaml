@@ -1,0 +1,32 @@
+name: e_commerce-smartphone
+
+
+services:
+  app:
+    build: .    
+    image : spring_app                   
+    container_name: spring_app
+    ports:
+      - "8080:8080"                 
+    depends_on:
+      - mysql                     
+    environment:
+    
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/smartphone_management_db?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Hual-1325
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+  mysql: 
+    image: mysql:8.0 
+    restart: unless-stopped 
+    container_name: mysql
+    environment: 
+      MYSQL_ROOT_PASSWORD: Hual-1325 
+      MYSQL_DATABASE: smartphone_management_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
