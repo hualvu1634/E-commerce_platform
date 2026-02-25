@@ -41,7 +41,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id",nullable = false)
     private Category category;
-
+    @Column(columnDefinition = "TEXT")
+    private String imageUrl;
     @Column(nullable = false)   
     @Builder.Default
     private Boolean isActive = true;

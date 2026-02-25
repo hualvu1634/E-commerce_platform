@@ -1,6 +1,7 @@
 package e_commerce.project.dto.request;
 
 import java.math.BigDecimal;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,4 +28,6 @@ public class ProductRequest {
     
     @NotNull(message = "NOT_NULL")
     private Long categoryId;
+
+    private String imageUrl;
 }
