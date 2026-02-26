@@ -2,6 +2,7 @@ package e_commerce.project.controller;
 
 import e_commerce.project.dto.request.OrderRequest;
 import e_commerce.project.dto.response.OrderResponse;
+import e_commerce.project.dto.response.PageResponse;
 import e_commerce.project.service.OrderService;
 import jakarta.validation.Valid;
 
@@ -24,6 +25,10 @@ public class OrderController {
         OrderResponse response = orderService.placeOrder(request);
         return ResponseEntity.ok(response);
     }
-  
+    @GetMapping
+    public ResponseEntity<PageResponse<OrderResponse>> getOrder(@RequestParam(value = "page", defaultValue = "1") int page
+      ,@RequestParam(defaultValue = "10") int pageSize){
+        return ResponseEntity.ok(orderService.getOrder(page, pageSize));
+      }
     
 }

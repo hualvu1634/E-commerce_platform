@@ -5,6 +5,7 @@ import e_commerce.project.dto.request.ItemRequest;
 import e_commerce.project.dto.request.OrderRequest;
 import e_commerce.project.dto.response.OrderItemResponse; 
 import e_commerce.project.dto.response.OrderResponse;
+import e_commerce.project.dto.response.PageResponse;
 import e_commerce.project.entity.*;
 import e_commerce.project.enumerate.ErrorCode;
 import e_commerce.project.enumerate.OrderStatus;
@@ -12,6 +13,11 @@ import e_commerce.project.exception.AppException;
 import e_commerce.project.mapper.OrderMapper;
 import e_commerce.project.repository.*;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +26,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -94,6 +101,29 @@ public class OrderService {
         }
 
         return response;
+    }
+    public PageResponse<OrderResponse> getOrder(int page, int size) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+   
+    Pageable pageable = PageRequest.of(page - 1, size, Sort.by("id").ascending());
+
+
+    Page<Order> pageData = orderRepository.findByUser(user,pageable);
+
+    List<OrderResponse> responseList = pageData.getContent().stream()
+                .map(orderMapper::toOrderResponse)
+                .collect(Collectors.toList());
+    return PageResponse.<OrderResponse>builder()
+            .currentPage(page)
+            .pageSize(pageData.getSize())
+            .totalPages(pageData.getTotalPages())
+            .totalElements(pageData.getTotalElements())
+            .data(responseList) 
+            .build();
+
     }
 
 
