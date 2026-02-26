@@ -15,7 +15,7 @@ import java.util.List;
 
 @Configuration
 public class Initialize {
-    @SuppressWarnings("null")
+   
     @Bean
     CommandLineRunner initDatabase(CategoryRepository categoryRepo, 
                                    UserRepository userRepo,
