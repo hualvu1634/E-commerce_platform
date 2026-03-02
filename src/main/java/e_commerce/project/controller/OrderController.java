@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/orders")
   @PreAuthorize("hasAuthority('USER')")
+  @CrossOrigin(origins = "http://localhost:5173")
 public class OrderController {
 
     @Autowired
