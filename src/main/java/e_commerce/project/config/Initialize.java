@@ -1,9 +1,11 @@
 package e_commerce.project.config;
 
+import e_commerce.project.entity.Cart;
 import e_commerce.project.entity.Category;
 import e_commerce.project.entity.Product;
 import e_commerce.project.entity.User;
 import e_commerce.project.enumerate.Role;
+import e_commerce.project.repository.CartRepository;
 import e_commerce.project.repository.CategoryRepository;
 import e_commerce.project.repository.ProductRepository;
 import e_commerce.project.repository.UserRepository;
@@ -23,6 +25,7 @@ public class Initialize {
     CommandLineRunner initDatabase(CategoryRepository categoryRepo, 
                                    UserRepository userRepo,
                                    ProductRepository productRepo,
+                                   CartRepository cartRepository,
                                    PasswordEncoder passwordEncoder) {
         return args -> {
          
@@ -35,21 +38,26 @@ public class Initialize {
 
       
             if (userRepo.count() == 0) {
-                userRepo.saveAll(List.of(User.builder()
+                User admin = User.builder()
                         .username("admin123")
                         .password(passwordEncoder.encode("12345678"))
                         .name("Admin")
                         .phoneNumber("0099999999")
                         .role(Role.ADMIN)
-                        .build(), User.builder()
+                        .build();
+                User user =  User.builder()
                         .username("user1234")
                         .password(passwordEncoder.encode("12345678"))
                         .name("User")
                         .phoneNumber("0123456789")
                         .role(Role.USER)
-                        .build()));
+                        .build();
+                userRepo.saveAll(List.of(admin,user));
+                if(cartRepository.count() ==0){
+                cartRepository.save(Cart.builder().user(user).build());
+           }
             }
-            // Khởi tạo sản phẩm mẫu
+           
             if (productRepo.count() == 0) {
                 // Lấy danh mục để gán category_id chính xác
                 Category apple = categoryRepo.findByName("Apple").orElse(null);
