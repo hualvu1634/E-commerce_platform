@@ -30,6 +30,9 @@ public enum ErrorCode {
     INVALID_MIN(400, "giá trị đầu vào không hợp lệ"),
     INVALID_PHONE(400, "định dạng số điện thoại không đúng"),
     NOT_ENOUGH(400,"k đủ số lượng"),
+    ORDER_NOT_FOUND(404,"Không tìm thấy đơn hàng"),
+
+
     CART_EMPTY(400,"Giỏ hàng trống");
 
 

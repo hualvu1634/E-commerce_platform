@@ -16,26 +16,24 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/carts")
 @CrossOrigin(origins = "http://localhost:5173")
+ @PreAuthorize("hasAuthority('USER')")
 public class CartController {
 
     @Autowired
     private CartService cartService;
- @PreAuthorize("hasAuthority('USER')")
+
     @PostMapping
     public ResponseEntity<CartResponse> addToCart( @Valid @RequestBody ItemRequest request) {
         return new ResponseEntity<>(cartService.addToCart(request),HttpStatus.CREATED);
     }
-    @PreAuthorize("hasAuthority('USER')")
     @GetMapping
     public ResponseEntity<List<CartResponse>> getCart(){
         return ResponseEntity.ok(cartService.getCart());
     }
-    @PreAuthorize("hasAuthority('USER')")
     @PutMapping
     public ResponseEntity<List<CartResponse>> updateCart( @Valid @RequestBody List<ItemRequest> cartRequest){
         return ResponseEntity.ok(cartService.updateCart(cartRequest));
     }
-     @PreAuthorize("hasAuthority('USER')")
     @DeleteMapping("/item/{productId}")
     public ResponseEntity<ApiResponse> removeProductFromCart(@PathVariable Long productId) {
         

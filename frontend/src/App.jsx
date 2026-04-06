@@ -8,7 +8,7 @@ import SignUp from './pages/SignUp';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderHistory from './pages/OrderHistory';
-
+import Payment from './pages/Payment';
 function App() {
   return (
     <Router>
@@ -22,6 +22,7 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/orders" element={<OrderHistory />} />
+            <Route path="/payment" element={<Payment />} />
           </Routes>
         </div>
         <footer className="bg-white text-center py-4 border-top">

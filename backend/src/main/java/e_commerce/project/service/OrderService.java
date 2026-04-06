@@ -125,6 +125,12 @@ public class OrderService {
             .build();
 
     }
+    public OrderResponse getOrderStatus(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new AppException( ErrorCode.ORDER_NOT_FOUND)); 
+                return  orderMapper.toOrderResponse(order);
+       
+    }
 
 
 }

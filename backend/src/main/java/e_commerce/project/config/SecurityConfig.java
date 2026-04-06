@@ -41,6 +41,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(HttpMethod.GET, PUBLIC_GET).permitAll()
             .requestMatchers(HttpMethod.POST, "api/auth/**").permitAll()
+            .requestMatchers("/api/payments/sepay-webhook").permitAll()
         
             .anyRequest().authenticated()
                  

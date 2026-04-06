@@ -17,7 +17,7 @@ const Checkout = () => {
 
   const handleInputChange = (e) => setCustomerInfo({ ...customerInfo, [e.target.name]: e.target.value });
 
-  const handleSubmitOrder = async (e) => {
+const handleSubmitOrder = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -32,11 +32,15 @@ const Checkout = () => {
     };
 
     try {
-      // 1. Gửi đơn hàng lên server
-      await orderApi.checkout(orderData); 
+  
+      const response = await orderApi.checkout(orderData); 
       
-      // 2. Vì bạn muốn bỏ qua bước quét QR, ta xác nhận thành công luôn tại giao diện
-      setIsPaid(true); 
+
+      const newOrderId = response.data.orderId || response.data.id;
+
+
+      navigate('/payment', { state: { orderId: newOrderId } }); 
+
     } catch (err) { 
       alert("Lỗi đặt hàng! Vui lòng thử lại."); 
     } finally {

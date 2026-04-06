@@ -31,5 +31,9 @@ public class OrderController {
       ,@RequestParam(defaultValue = "10") int pageSize){
         return ResponseEntity.ok(orderService.getOrder(page, pageSize));
       }
+    @GetMapping("/{id}/status")
+    public ResponseEntity<OrderResponse> getOrderStatus(@PathVariable Long id) {
+        return ResponseEntity.ok(orderService.getOrderStatus(id));
+    }
     
 }
