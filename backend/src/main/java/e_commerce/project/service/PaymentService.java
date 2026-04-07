@@ -21,10 +21,9 @@ public class PaymentService {
 
     @Transactional
     public PaymentResponse processSePayWebhook(PaymentRequest request) {
-        String content = request.getTransactionContent();
-        BigDecimal amountIn = request.getAmountIn();
+        String content = request.getContent();
+        BigDecimal amountIn = request.getTransferAmount();
 
-        // 1. Kiểm tra dữ liệu đầu vào
         if (content == null || amountIn == null || amountIn.compareTo(BigDecimal.ZERO) <= 0) {
             return PaymentResponse.builder()
                     .success(false)
@@ -32,6 +31,11 @@ public class PaymentService {
         }
 
         Long orderId = extractOrderId(content);
+        if (orderId == null) {
+            return PaymentResponse.builder()
+                    .success(false)
+                    .message("Không tìm thấy mã đơn hàng").build();
+        }
 
         Order order = orderRepository.findById(orderId).orElse(null);
         if (order == null) {
@@ -41,9 +45,7 @@ public class PaymentService {
                     .message("Đơn hàng không tồn tại").build();
         }
 
-
         if (order.getStatus() == OrderStatus.PENDING) {
-    
             BigDecimal testAmount = new BigDecimal("2000"); 
             
             if (amountIn.compareTo(testAmount) >= 0) { 
@@ -68,7 +70,6 @@ public class PaymentService {
     }
 
     private Long extractOrderId(String content) {
-
         Pattern pattern = Pattern.compile("DH(\\d+)");
         Matcher matcher = pattern.matcher(content.toUpperCase());
         if (matcher.find()) {

@@ -26,7 +26,7 @@ const Payment = () => {
           setIsPaid(true);
         }
       } catch (error) {
-        console.error("Lỗi check status:", error);
+        console.error(error);
       }
     };
 
@@ -67,7 +67,7 @@ const Payment = () => {
     );
   }
 
-  const qrUrl = `https://qr.sepay.vn/img?bank=BIDV&acc=8820382907&template=compact&amount=2000&des=DH${orderId}`;
+  const qrUrl = `https://qr.sepay.vn/img?bank=BIDV&acc=962476PWAH&template=compact&amount=2000&des=DH${orderId}`;
 
   return (
     <div className="container mt-5 text-center">
